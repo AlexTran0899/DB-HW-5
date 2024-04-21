@@ -143,7 +143,7 @@ module.exports = {
   // testEnvironmentOptions: {},
 
   // Adds a location field to test results
-  // testLocationInResults: false,
+  // testlocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
   // testMatch: [

@@ -4,13 +4,13 @@
  */
 exports.up = async function(knex) {
     await knex.schema
-    .createTable('Game', (games) => {
-      games.increments('GameId')
-      games.integer('TeamId1', 200).references("TeamId").inTable("Team").onDelete("CASCADE")
-      games.integer('TeamId2', 200).references("TeamId").inTable("Team").onDelete("CASCADE")
-      games.integer('Score1', 200).notNullable()
-      games.integer('Score2', 200).notNullable()
-      games.date('Date', 200).notNullable()
+    .createTable('game', (games) => {
+      games.increments('game_id')
+      games.integer('team_id1', 200).references("team_id").inTable("team").onDelete("CASCADE")
+      games.integer('team_id2', 200).references("team_id").inTable("team").onDelete("CASCADE")
+      games.integer('score1', 200).notNullable()
+      games.integer('score2', 200).notNullable()
+      games.date('date', 200).notNullable()
       games.timestamps(false, true)
     })
 };
@@ -20,5 +20,5 @@ exports.up = async function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function(knex) {
-    await knex.schema.dropTableIfExists('Game')
+    await knex.schema.dropTableIfExists('game')
 };

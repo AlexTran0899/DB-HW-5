@@ -4,12 +4,12 @@
  */
 exports.up = async function(knex) {
     await knex.schema
-    .createTable('Team', (teams) => {
-      teams.increments('TeamId')
-      teams.string('Location', 200).notNullable()
-      teams.string('Nickname', 200).notNullable()
-      teams.string('Conference', 200).notNullable()
-      teams.string('Division', 200).notNullable()
+    .createTable('team', (teams) => {
+      teams.increments('team_id')
+      teams.string('location', 200).notNullable()
+      teams.string('nickname', 200).notNullable()
+      teams.string('conference', 200).notNullable()
+      teams.string('division', 200).notNullable()
       teams.timestamps(false, true)
     })
 };
@@ -20,5 +20,5 @@ exports.up = async function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function(knex) {
-    await knex.schema.dropTableIfExists('Team')
+    await knex.schema.dropTableIfExists('team')
 };

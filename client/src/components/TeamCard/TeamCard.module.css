@@ -1,0 +1,11 @@
+.TeamCard {
+    display: flex; 
+    gap: 20px; 
+    border: 1px solid black; 
+    box-sizing: border-box;
+    padding: 20px;
+    margin-bottom: 20px;
+    span{
+        font-weight: bold;
+    }
+}

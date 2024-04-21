@@ -1,0 +1,46 @@
+.GameCard{
+    box-sizing: border-box;
+    margin: 0px 0px 60px 0px;
+}
+.Upper {
+    display: flex;
+    gap:30px;
+    align-items: center;
+    margin-bottom: 10px;
+    h1{
+        font-size: 58px;
+    }
+    h2{
+        font-weight: bold;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+    span{
+        font-size: 24px;
+    }
+}
+
+.Bottom {
+    display: flex;
+    justify-content: right;
+}
+
+.team1{
+    display: flex;
+    border: 1px solid black;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: right;
+    width: 50vw;
+}
+
+.team2{
+    display: flex;
+    border: 1px solid black;
+    justify-content: space-between;
+    padding: 20px;
+    width: 50vw;
+}
+.star{
+    width: 50px;
+}

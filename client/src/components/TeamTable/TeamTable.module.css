@@ -1,4 +1,6 @@
-table {
+.TeamTable{
+  
+  table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -9,7 +11,12 @@ table {
     text-align: left;
     padding: 8px;
   }
-  
+
+  th{
+    font-weight: bold;
+  }
+
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+}
