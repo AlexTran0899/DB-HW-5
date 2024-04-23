@@ -67,7 +67,7 @@ function PlayerForm() {
         <form style={{display:"flex", flexDirection:"column", gap:"20px"}} onSubmit={onSubmit}>
             <div style={{display:"flex", gap: "20px"}}>
                 <div>
-                    <label for="team_id">team_id:</label><br/>
+                    <label for="team_id">Team ID:</label><br/>
                     <input type="text" id="team_id" name="team_id" value={playerData.team_id} onChange={onChange} /><br/>
                 </div>
                 <div>

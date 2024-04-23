@@ -50,23 +50,23 @@ function GameForm() {
             <div style={{display:"flex", gap:"20px"}}>
                 <div>
                     <div>
-                        <label for="team_id1">team_id1:</label> <br/>
+                        <label for="team_id1">Team 1 ID:</label> <br/>
                         <input style={{marginBottom:"20px"}} type="text" id="team_id1" name="team_id1" value={gameData.team_id1} onChange={onChange} />
-                        <label for="score1">score1:</label><br/>
+                        <label for="score1">Team 1 Score:</label><br/>
                         <input type="text" id="score1" name="score1" value={gameData.score1} onChange={onChange} />
                     </div>                        
                 </div>
                 <div>
                     <div>
-                        <label for="team_id2">team_id2:</label><br/>
+                        <label for="team_id2">Team 2 ID:</label><br/>
                         <input style={{marginBottom:"20px"}} type="text" id="team_id2" name="team_id2" value={gameData.team_id2} onChange={onChange} />                
-                        <label for="score2">score2:</label><br/>
+                        <label for="score2">Team 2 Score:</label><br/>
                         <input type="text" id="score2" name="score2" value={gameData.score2} onChange={onChange} /><br/>
                     </div>
                 </div>
             </div>
             <div>
-                <label for="date">date:</label><br/>
+                <label for="date">Date:</label><br/>
                 <input type="date" id="date" name="date" value={gameData.date} onChange={onChange} />
             </div>
             <button type="submit" style={{width:"100%"}}>Submit</button>

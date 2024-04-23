@@ -23,8 +23,6 @@ function getAllTeams() { return db('team') }
 
 async function getTeamsByConferenceAndWins() {
   const {rows} =  await db.raw("SELECT t10.team_id, t10.conference, t10.nickname, t10.division, winner_team_id, conference_winner_team_id FROM team as t10 left join (SELECT t1.conference,CASE WHEN(score1 > score2 AND team_id1 = t1.team_id) THEN t1.team_id WHEN(score1 < score2 AND team_id1 != t1.team_id) THEN t1.team_id ELSE t2.team_id END AS winner_team_id, CASE WHEN(score1 > score2 AND team_id1 = t1.team_id AND t1.conference = t2.conference) THEN t1.team_id WHEN(score1 < score2 AND team_id1 != t1.team_id AND t1.conference = t2.conference) THEN t1.team_id WHEN(score1 < score2 AND team_id2 = t2.team_id AND t1.conference = t2.conference) THEN t2.team_id WHEN(score1 > score2 AND team_id2 != t2.team_id AND t1.conference = t2.conference) THEN t2.team_id ELSE null END AS conference_winner_team_id FROM game as g join team as t1 on t1.team_id = g.team_id1 join team as t2 on t2.team_id = g.team_id2) as s3 ON s3.winner_team_id = t10.team_id ORDER BY t10.conference")
-  
-  console.log(rows)
   const teamObject = {}
   const conference = {}
 
@@ -80,7 +78,6 @@ async function getPlayersByteam_id(team_id) {
 
 async function getPlayersByPlayerPosition(playerPosition) {
   const players = await db('player').where({position: playerPosition})
-  console.log(players)
   return players
 }
 
@@ -103,7 +100,6 @@ async function getGamesBydate(date) {
 async function insertPlayer(player) {
   // WITH POSTGRES WE CAN PASS A "RETURNING ARRAY" AS 2ND ARGUMENT TO knex.insert/update
   // AND OBTAIN WHATEVER COLUMNS WE NEED FROM THE NEWLY CREATED/UPdateD RECORD
-  console.log(player)
   return await db('player').insert(player, "*")
 }
 
@@ -179,7 +175,6 @@ server.get('/api/teams', async (req, res, next) => {
 
 
 server.post('/api/players', validatePlayerInput, async (req, res, next) => {
-  console.log("here in the functio body")
   insertPlayer(req.body)
   .then(data => res.status(201).json(data))
   .catch(next)
