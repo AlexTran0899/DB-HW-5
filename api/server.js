@@ -198,10 +198,8 @@ server.use('*', (req, res, next) => {
 
 
 server.use((err, req, res, next) => {
-  console.log("here in the catch all block")
   res?.status(500).json({
-      message: err?.message,
-      stack: err?.stack
+      message: "something went wrong :( ",
   })
 })
 

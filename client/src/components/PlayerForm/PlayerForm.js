@@ -42,10 +42,8 @@ function PlayerForm() {
 
         axios.post(url, playerData)
         .then(res => {
-            console.log(res);
             alert("player created")
         }).catch(err => {
-            console.log(err.message)
             alert("failed to create player")
         })
     }
