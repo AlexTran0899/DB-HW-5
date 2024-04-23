@@ -2,6 +2,7 @@ const express = require('express')
 const helmet = require('helmet')
 const cors = require('cors')
 const db = require('./data/db-config')
+const path = require('path')
 
 async function getAllGames() {
   const game = db('game')
@@ -102,6 +103,7 @@ async function getGamesBydate(date) {
 async function insertPlayer(player) {
   // WITH POSTGRES WE CAN PASS A "RETURNING ARRAY" AS 2ND ARGUMENT TO knex.insert/update
   // AND OBTAIN WHATEVER COLUMNS WE NEED FROM THE NEWLY CREATED/UPdateD RECORD
+  console.log(player)
   return await db('player').insert(player, "*")
 }
 
@@ -117,61 +119,69 @@ server.use(express.json())
 server.use(helmet())
 server.use(cors())
 
-server.get('/api/games', async (req, res) => {
-  const games = await(getAllGames())
-  res.json(games)
+server.use(express.static(path.join(__dirname, './build')))
+
+server.get('/api/games', async (req, res, next) => {
+  getAllGames()
+  .then(data => res.json(data))
+  .catch(next)
 })
 
-server.get('/api/games/team_id/:team_id', async (req, res) => {
+server.get('/api/games/team_id/:team_id', async (req, res, next) => {
   const team_id = req.params.team_id
-  const games = await(getGamesByteam_id(team_id))
-  res.json(games)
+  getGamesByteam_id(team_id)
+  .then(games => res.json(games))
+  .catch(next)
 })
 
-server.get('/api/players/team_id/:team_id', async (req, res) => {
+server.get('/api/players/team_id/:team_id', async (req, res, next) => {
   const team_id = req.params.team_id
-  const players = await(getPlayersByteam_id(team_id))
-  res.json(players)
+  getPlayersByteam_id(team_id)
+  .then(players => res.json(players))
+  .catch(next)
 })
 
-server.get('/api/players/position/:position', async (req, res) => {
+server.get('/api/players/position/:position', async (req, res, next) => {
   const position = req.params.position
-  console.log(position)
-  const players = await(getPlayersByPlayerPosition(position))
-  res.json(players)
+  getPlayersByPlayerPosition(position)
+  .then(players => res.json(players))
+  .catch(next)
+})
+
+
+server.get('/api/teams/getTeamsByConferenceAndWins', async (req, res, next) => {
+  getTeamsByConferenceAndWins()
+  .then(data => res.json(data))
+  .catch(next)
 })
 
 
 
-
-
-server.get('/api/teams/getTeamsByConferenceAndWins', async (req, res) => {
-  const data = await(getTeamsByConferenceAndWins())
-  res.json(data)
-})
-
-
-
-server.get('/api/games/date/:date', async (req, res) => {
+server.get('/api/games/date/:date', async (req, res, next) => {
   const date = req.params.date
-  console.log(date)
-  const games = await(getGamesBydate(date))
-  console.log(games)
-  res.json(games)
+  getGamesBydate(date)
+  .then(data => res.json(data))
+  .catch(next)
 })
 
-server.get('/api/players', async (req, res) => {
-  res.json(await getAllPlayers())
-})
-
-
-server.get('/api/teams', async (req, res) => {
-  res.json(await getAllTeams())
+server.get('/api/players', async (req, res, next) => {
+  getAllPlayers()
+  .then(data => res.json(data))
+  .catch(next)
 })
 
 
-server.post('/api/players', async (req, res) => {
-  res.json(await insertPlayer(req.body))
+server.get('/api/teams', async (req, res, next) => {
+  getAllTeams()
+  .then(data => res.json(data))
+  .catch(next)
+})
+
+
+server.post('/api/players', async (req, res, next) => {
+  insertPlayer(req.body)
+  .then(data => res.json(data))
+  .catch(next)
 })
 
 server.post('/api/games', async (req, res, next) => {
@@ -180,9 +190,17 @@ server.post('/api/games', async (req, res, next) => {
     .catch(next)   
 })
 
-server.post('/api/users', async (req, res) => {
-  res.status(201).json(await insertPlayer(req.body))
+server.post('/api/users', async (req, res, next) => {
+  insertPlayer(req.body)
+  .then(data => res.status(201).json(data))
+  .catch(next)
 })
+
+
+server.use('*', (req, res, next) => {
+  res.sendFile(path.join(__dirname, './build', 'index.html'))
+})
+
 
 server.use((err, req, res, next) => {
   console.log("here in the catch all block")

@@ -4,10 +4,9 @@ import style from "./PlayerForm.module.css"
 
 
 const defaultGameData = { 
-    player_id: "",
     team_id: "",
-    Name: "",
-    Position:""
+    name: "",
+    position:"Quarterback"
 }
 
 const positionOption = [
@@ -55,7 +54,7 @@ function PlayerForm() {
     const onChange = (e) => {
         let {name, value} = e.target
         
-        if(["player_id", "team_id"].find(tag => tag === name)) {
+        if("team_id" === name) {
             value = value.replace(/[a-zA-Z]+/g, '');     
         }
     
@@ -73,12 +72,12 @@ function PlayerForm() {
                 </div>
                 <div>
                     <label for="Name">Name:</label><br/>
-                    <input type="text" id="Name" name="Name" value={playerData.Name} onChange={onChange} /><br/>
+                    <input type="text" id="Name" name="name" value={playerData.name} onChange={onChange} /><br/>
                 </div>    
             </div>
             <div >
                 <label for="Position">Position:</label><br/>
-                <select name="Position" id="Position">
+                <select name="position" id="Position" onChange={onChange}>
                     {positionOption.map(position =>  <option value={position}>{position}</option>)}
                 </select>
                 <br/>

@@ -22,8 +22,8 @@ function PlayerTable() {
                 <tr key={player.player_id}>
                     <td>{player.player_id}</td>
                     <td>{player.team_id}</td>
-                    <td>{player.Name}</td>
-                    <td>{player.Position}</td>
+                    <td>{player.name}</td>
+                    <td>{player.position}</td>
                 </tr>
             ))}
         </table>

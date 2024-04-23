@@ -24,8 +24,8 @@ function TeamTable() {
                     <td>{team.team_id}</td>
                     <td>{team.location}</td>
                     <td>{team.nickname}</td>
-                    <td>{team.Conference}</td>
-                    <td>{team.Division}</td>
+                    <td>{team.conference}</td>
+                    <td>{team.division}</td>
                 </tr>
             ))}
         </table>

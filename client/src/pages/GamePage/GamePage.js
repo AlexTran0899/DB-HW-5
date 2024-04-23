@@ -14,8 +14,8 @@ const GamePage = () => {
 
     useEffect(() =>  {  
         getAllGames()  
-        // const teamsUrl =  process.env.REACT_APP_API_URL + "/api/teams"
-        // axios.get(teamsUrl).then(res => {setTeams(res.data)})
+        const teamsUrl =  process.env.REACT_APP_API_URL + "/api/teams"
+        axios.get(teamsUrl).then(res => {setTeams(res.data)})
 
     }, [])
 
