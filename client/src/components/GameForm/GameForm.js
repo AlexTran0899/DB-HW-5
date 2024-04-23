@@ -44,6 +44,8 @@ function GameForm() {
 
   return (
     <div className={style.GameForm}>
+
+        <h1 style={{textAlign:"center", fontWeight:"bold", fontSize:"50px", margin:"50px"}}>Add a Game</h1>
         <form style={{display:"flex", flexDirection:"column", gap:"20px"}}  onSubmit={onSubmit}>
             <div style={{display:"flex", gap:"20px"}}>
                 <div>

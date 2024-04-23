@@ -3,6 +3,7 @@ const helmet = require('helmet')
 const cors = require('cors')
 const db = require('./data/db-config')
 const path = require('path')
+const {validateGameInput, validatePlayerInput} = require("./middleware/inputValidator")
 
 async function getAllGames() {
   const game = db('game')
@@ -78,7 +79,6 @@ async function getPlayersByteam_id(team_id) {
 
 
 async function getPlayersByPlayerPosition(playerPosition) {
-  console.log(playerPosition)
   const players = await db('player').where({position: playerPosition})
   console.log(players)
   return players
@@ -178,22 +178,17 @@ server.get('/api/teams', async (req, res, next) => {
 })
 
 
-server.post('/api/players', async (req, res, next) => {
-  insertPlayer(req.body)
-  .then(data => res.json(data))
-  .catch(next)
-})
-
-server.post('/api/games', async (req, res, next) => {
-  insertGame(req.body)
-    .then(data => res.json(data))
-    .catch(next)   
-})
-
-server.post('/api/users', async (req, res, next) => {
+server.post('/api/players', validatePlayerInput, async (req, res, next) => {
+  console.log("here in the functio body")
   insertPlayer(req.body)
   .then(data => res.status(201).json(data))
   .catch(next)
+})
+
+server.post('/api/games', validateGameInput ,async (req, res, next) => {
+  insertGame(req.body)
+    .then(data => res.status(201).json(data))
+    .catch(next)   
 })
 
 

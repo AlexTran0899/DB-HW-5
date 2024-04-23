@@ -64,6 +64,8 @@ function PlayerForm() {
 
   return (
     <div className={style.PlayerForm}>
+
+        <h1 style={{textAlign:"center", fontWeight:"bold", fontSize:"50px", margin:"50px"}}>Add a Player</h1>
         <form style={{display:"flex", flexDirection:"column", gap:"20px"}} onSubmit={onSubmit}>
             <div style={{display:"flex", gap: "20px"}}>
                 <div>

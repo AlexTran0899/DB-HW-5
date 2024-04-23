@@ -1,5 +1,6 @@
 .GameForm{
     width: 500px;
+    margin: 100px auto;
     form{
         border:1px solid black;
         box-sizing: border-box;
