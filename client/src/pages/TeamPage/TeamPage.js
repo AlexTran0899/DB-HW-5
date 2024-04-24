@@ -4,20 +4,13 @@ import TeamCard from "../../components/TeamCard/TeamCard";
 
 const PlayerPage = () => {
     const [conferences, setConferences] = useState([])
-    const [conferencesKeys, setConferencesKeys] = useState([])
     const [filter, setFilter] = useState("-1")
 
     const getAllTeams = () => {
         const conferencesWithTeamUrl =  process.env.REACT_APP_API_URL + "/api/teams/getTeamsByConferenceAndWins"
-        axios.get(conferencesWithTeamUrl).then(res => {
-                setConferences(res.data)
-                const temp = []
-                for(let conference in res.data) {
-                    temp.push(conference)
-                }
-                setConferencesKeys(temp)
-            }
-        )
+        axios.get(conferencesWithTeamUrl)
+        .then(res => setConferences(res.data))
+        .catch(err => alert("failed to retrieve the list of teams"))
     }
 
     useEffect(() =>  {
@@ -25,25 +18,16 @@ const PlayerPage = () => {
     }, [])
 
     const sortByNumberOfWins = () => {
-        let temp = {...conferences}
-        for(let conference in temp ){
-            temp[conference].sort((a,b) => b.win - a.win)
-        }
+        let temp = [...conferences]
+        temp.map(conference => conference[1].sort((a,b) => b.win - a.win))
         setConferences(temp)
     }
 
     const sortByNumberOfConferencesWins = () => {
-        let temp = {...conferences}
-        for(let conference in temp ){
-            temp[conference].sort((a,b) => b.conferenceWin - a.conferenceWin)
-        }
+        let temp = [...conferences]
+        temp.map(conference => conference[1].sort((a,b) => b.conference_win - a.conference_win))
         setConferences(temp)
     }
-
-
-    useEffect(()=> {
-        console.log("here",conferences)
-    },[conferences])
 
     const onChangeFilter = (e) => {
       const filter = e.target.value
@@ -68,8 +52,10 @@ const PlayerPage = () => {
             </select> 
 
           </div>
-          {conferencesKeys && conferencesKeys.map(conferenceName => {
-            const conferenceTeams = conferences[conferenceName]
+          {conferences && conferences.map(conference => {
+
+            const conferenceTeams = conference[1]
+            const conferenceName = conference[0]
             return (
                 <div>
                     <h1 style={{fontSize:"20px", fontWeight:"bold", marginBottom:"20px"}}>{conferenceName}</h1>

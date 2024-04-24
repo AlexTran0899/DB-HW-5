@@ -7,7 +7,7 @@ const TeamCard =  ({team}) => {
             <h2><span> Conference: </span> {team.conference}</h2>
             <h2><span> Division: </span> {team.division}</h2>
             <h2><span> Total Wins: </span> {team.win}</h2>
-            <h2><span> Conference Wins: </span> {team.conferenceWin}</h2>
+            <h2><span> Conference Wins: </span> {team.conference_win}</h2>
         </div>
     )
 }

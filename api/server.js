@@ -22,32 +22,20 @@ function getAllPlayers() { return db('player') }
 function getAllTeams() { return db('team') }
 
 async function getTeamsByConferenceAndWins() {
-  const {rows} =  await db.raw("SELECT t10.team_id, t10.conference, t10.nickname, t10.division, winner_team_id, conference_winner_team_id FROM team as t10 left join (SELECT t1.conference,CASE WHEN(score1 > score2 AND team_id1 = t1.team_id) THEN t1.team_id WHEN(score1 < score2 AND team_id1 != t1.team_id) THEN t1.team_id ELSE t2.team_id END AS winner_team_id, CASE WHEN(score1 > score2 AND team_id1 = t1.team_id AND t1.conference = t2.conference) THEN t1.team_id WHEN(score1 < score2 AND team_id1 != t1.team_id AND t1.conference = t2.conference) THEN t1.team_id WHEN(score1 < score2 AND team_id2 = t2.team_id AND t1.conference = t2.conference) THEN t2.team_id WHEN(score1 > score2 AND team_id2 != t2.team_id AND t1.conference = t2.conference) THEN t2.team_id ELSE null END AS conference_winner_team_id FROM game as g join team as t1 on t1.team_id = g.team_id1 join team as t2 on t2.team_id = g.team_id2) as s3 ON s3.winner_team_id = t10.team_id ORDER BY t10.conference")
-  const teamObject = {}
-  const conference = {}
-
-  rows.forEach(row => {
-    if(conference[row.conference] === undefined) { conference[row.conference] = [] } 
-    
-    if(teamObject[row.team_id] === undefined) {
-      teamObject[row.team_id] = row
-      teamObject[row.team_id]['win'] = 0
-      teamObject[row.team_id]['conferenceWin'] = 0
-    }
-       
-    if(row.winner_team_id !== null) {
-      teamObject[row.team_id]['win'] += 1
-    }
-
-    if(row.conference_winner_team_id !== null) {
-      teamObject[row.team_id]['conferenceWin'] += 1
-    }
-  })
-
-  for(let team_id in teamObject) {
-    const currTeam = teamObject[team_id]
-    conference[currTeam.conference].push(currTeam)
+  const {rows} =  await db.raw("SELECT t.team_id, t.nickname, t.conference, t.division, CAST(COUNT(winner_id) AS int) as win, CAST(COALESCE(SUM(conference_win), 0) AS INT) as conference_win FROM (SELECT CASE WHEN(t1.team_id = g.team_id1 AND g.score1 > g.score2) THEN g.team_id1 WHEN(t1.team_id = g.team_id2 AND g.score1 < g.score2) THEN g.team_id1 ELSE g.team_id2 END AS winner_id, CASE WHEN(t1.conference = t2.conference) THEN 1 ELSE 0 END AS conference_win FROM team as t1 LEFT JOIN game as g ON t1.team_id = g.team_id1 LEFT JOIN team as t2 ON t2.team_id = g.team_id2) as sub1 RIGHT JOIN team as t ON t.team_id = winner_id GROUP BY t.team_id ORDER BY conference")
+  const conference = []
+  if(rows.length > 0) {
+    conference.push([rows[0].conference, [rows[0]]])
   }
+  
+
+  for(let i = 1; i < rows.length; i++) {
+    if(rows[i].conference !== conference[conference.length - 1][0]) {
+      conference.push([rows[i].conference, [rows[i]]])
+    }
+    conference[conference.length - 1][1].push(rows[i])
+  }
+  console.log(conference)
 
   return conference
 }
