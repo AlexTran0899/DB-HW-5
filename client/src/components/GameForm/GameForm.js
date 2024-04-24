@@ -4,8 +4,8 @@ import style from "./GameForm.module.css"
 
 
 const defaultGameData = { 
-    team_id1: "", 
-    team_id2: "", 
+    team_id1: "1", 
+    team_id2: "1", 
     score1: "", 
     score2: "", 
     date: '2024-04-15'
@@ -14,9 +14,11 @@ const defaultGameData = {
 
 function GameForm() {
     const [gameData, setGameData] = useState(defaultGameData)
+    const [teams, setTeams] = useState([])
 
     const onSubmit = (e) => {
         e.preventDefault()
+        console.log(gameData)
         const url = process.env.REACT_APP_API_URL + "/api/games"
         axios.post(url, gameData)
         .then(res => {
@@ -30,8 +32,9 @@ function GameForm() {
     
     const onChange = (e) => {
         let {name, value} = e.target
+        console.log(name, value)
         
-        if(["team_id1", "team_id2","score1","score2"].find(tag => tag === name)) {
+        if(["score1","score2"].find(tag => tag === name)) {
             value = value.replace(/[a-zA-Z]+/g, '');     
         }
     
@@ -39,7 +42,8 @@ function GameForm() {
 
     }
     useEffect(() => {
-        console.log(gameData)
+        const teamsUrl =  process.env.REACT_APP_API_URL + "/api/teams"
+        axios.get(teamsUrl).then(res => {setTeams(res.data)})
     }, [gameData])
 
   return (
@@ -50,16 +54,26 @@ function GameForm() {
             <div style={{display:"flex", gap:"20px"}}>
                 <div>
                     <div>
-                        <label for="team_id1">Team 1 ID:</label> <br/>
-                        <input style={{marginBottom:"20px"}} type="text" id="team_id1" name="team_id1" value={gameData.team_id1} onChange={onChange} />
+                        <label for="team_id1">Team 1</label> <br/>
+                        <select onChange={onChange} style={{marginBottom:"20px"}} id="teamSelector" name="team_id1" required>
+                            {teams.length > 0 && teams.map(team => (
+                                <option value={team.team_id}>{team.nickname}</option>
+                            ))
+                            }
+                        </select>
                         <label for="score1">Team 1 Score:</label><br/>
-                        <input type="text" id="score1" name="score1" value={gameData.score1} onChange={onChange} />
+                        <input type="text" id="score1" name="score1" value={gameData.score1} onChange={onChange} required/>
                     </div>                        
                 </div>
                 <div>
                     <div>
-                        <label for="team_id2">Team 2 ID:</label><br/>
-                        <input style={{marginBottom:"20px"}} type="text" id="team_id2" name="team_id2" value={gameData.team_id2} onChange={onChange} />                
+                        <label for="team_id2">Team 2</label><br/>
+                        <select onChange={onChange} style={{marginBottom:"20px"}} id="teamSelector" name="team_id2" required>
+                            {teams.length > 0 && teams.map(team => (
+                                <option value={team.team_id}>{team.nickname}</option>
+                            ))
+                            }
+                        </select>
                         <label for="score2">Team 2 Score:</label><br/>
                         <input type="text" id="score2" name="score2" value={gameData.score2} onChange={onChange} /><br/>
                     </div>
@@ -76,12 +90,3 @@ function GameForm() {
 }
 
 export default GameForm;
-
-/*
-<div>
-                    <label for="team_id2">team_id2:</label>
-                    <input type="text" id="team_id2" name="team_id2" value={gameData.team_id2} onChange={onChange} />                
-                
-                    <label for="score2">score2:</label><br/>
-                    <input type="text" id="score2" name="score2" value={gameData.score2} onChange={onChange} /><br/>
-                </div> */
