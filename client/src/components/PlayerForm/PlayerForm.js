@@ -4,7 +4,7 @@ import style from "./PlayerForm.module.css"
 
 
 const defaultGameData = { 
-    team_id: "",
+    team_id: "1",
     name: "",
     position:"Quarterback"
 }
@@ -35,7 +35,12 @@ const positionOption = [
 
 function PlayerForm() {
     const [playerData, setPlayerData] = useState(defaultGameData)
+    const [teams, setTeams] = useState([])
 
+    useEffect(()=> {
+        const teamsUrl =  process.env.REACT_APP_API_URL + "/api/teams"
+        axios.get(teamsUrl).then(res => {setTeams(res.data)})
+    }, [])
     const onSubmit = (e) => {
         e.preventDefault()
         const url = process.env.REACT_APP_API_URL + "/api/players"
@@ -67,8 +72,13 @@ function PlayerForm() {
         <form style={{display:"flex", flexDirection:"column", gap:"20px"}} onSubmit={onSubmit}>
             <div style={{display:"flex", gap: "20px"}}>
                 <div>
-                    <label for="team_id">Team ID:</label><br/>
-                    <input type="text" id="team_id" name="team_id" value={playerData.team_id} onChange={onChange} /><br/>
+                    <label for="team_id">Team:</label><br/>
+                    <select onChange={onChange} style={{marginBottom:"20px"}} id="teamSelector" name="team_id" required>
+                            {teams.length > 0 && teams.map(team => (
+                                <option value={team.team_id}>{team.nickname}</option>
+                            ))
+                            }
+                    </select>
                 </div>
                 <div>
                     <label for="Name">Name:</label><br/>

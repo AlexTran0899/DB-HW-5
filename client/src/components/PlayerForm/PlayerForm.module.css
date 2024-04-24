@@ -8,6 +8,12 @@
         width: 100%;
     }
 
+
+    select{
+        width:218px;
+        height:22.5px;
+    }
+
     input{
         width: 210px;
     }
