@@ -163,7 +163,10 @@ server.get('/api/teams', async (req, res, next) => {
 
 
 server.get('/loaderio-262f1e94e4517f91b60c2d08822d3a02', async (req, res, next) => {
-  res.json("loaderio-262f1e94e4517f91b60c2d08822d3a02")
+  const text = 'loaderio-262f1e94e4517f91b60c2d08822d3a02'
+  res.attachment('loaderio-262f1e94e4517f91b60c2d08822d3a02.txt')
+  res.type('txt')
+  res.send(text)
 })
 
 server.post('/api/players', validatePlayerInput, async (req, res, next) => {
