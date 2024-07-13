@@ -162,6 +162,10 @@ server.get('/api/teams', async (req, res, next) => {
 })
 
 
+server.get('/loaderio-262f1e94e4517f91b60c2d08822d3a02', async (req, res, next) => {
+  res.json("loaderio-262f1e94e4517f91b60c2d08822d3a02")
+})
+
 server.post('/api/players', validatePlayerInput, async (req, res, next) => {
   insertPlayer(req.body)
   .then(data => res.status(201).json(data))
